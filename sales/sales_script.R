@@ -11,20 +11,33 @@ all_sales <- list.files(path = "./sales", pattern = ".csv")
 i <- 1
 for (salesdata in all_sales){
   datafile <- read_csv(paste0("./sales/", salesdata))
-  assign(paste0("dataset_", i), datafile)
+  assign(paste0("dataset_", i), datafile) # assigns=>creates an file
   i <- i + 1
 }
 
 ############## JOIN ###############
 # Use a tidyverse join to join all the data together into one file
 # called sales_data, then run the rest of the code
-
-
+sales_data <- full_join(dataset_1, dataset_2)
+sales_data <- full_join(sales_data, dataset_3)
+sales_data <- full_join(sales_data, dataset_4)
+sales_data <- full_join(sales_data, dataset_5)
+sales_data <- full_join(sales_data, dataset_6)
+sales_data <- full_join(sales_data, dataset_7)
+sales_data <- full_join(sales_data, dataset_8)
+sales_data <- full_join(sales_data, dataset_9)
+sales_data <- full_join(sales_data, dataset_10)
+sales_data <- full_join(sales_data, dataset_11)
+sales_data <- full_join(sales_data, dataset_12)
+sales_data <- full_join(sales_data, dataset_13)
+sales_data <- full_join(sales_data, dataset_14)
+sales_data <- full_join(sales_data, dataset_15)
+join_sales_ANACUBAS <- full_join(sales_data, dataset_16)
 
 ########################################
 
 ##### 3. Create summaries #####
-sales_summary <- sales_data %>%
+sales_summary <- join_sales_ANACUBAS %>%
   group_by(pizza, month) %>% 
   summarize(total_sales = sum(number))
 
@@ -33,10 +46,10 @@ ggplot(data = sales_summary, aes(x = pizza, y = total_sales))+
 
 # Daily sales
 # Create "proper" dates
-sales_data$date <- ymd(paste(sales_data$year, "/", sales_data$month, "/", sales_data$day))
+join_sales_ANACUBAS$date <- ymd(paste(join_sales_ANACUBAS$year, "/", join_sales_ANACUBAS$month, "/", join_sales_ANACUBAS$day))
 
 # Summarize data
-sales_summary_daily <- sales_data %>%
+sales_summary_daily <- join_sales_ANACUBAS %>%
   group_by(pizza, date) %>% 
   summarize(total_sales = sum(number))
 
@@ -48,7 +61,7 @@ ggplot(data = sales_summary_daily, aes(x = date, y = total_sales, fill = pizza))
   geom_bar(stat = "identity")
 
 # Average data
-sales_ave_daily <- sales_data %>%
+sales_ave_daily <- join_sales_ANACUBAS %>%
   group_by(pizza, date) %>% 
   summarize(ave_sales = mean(number))
 
